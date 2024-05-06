@@ -3,6 +3,7 @@ package test;
 import dao.ClienteDAOMock;
 import dao.IClienteDAO;
 import domains.Cliente;
+import exceptions.TipoChaveNaoEncontradaException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class ClienteServiceTest {
     }
 
     @Before
-    public void init(){
+    public void init() throws TipoChaveNaoEncontradaException {
         cliente = new Cliente();
         cliente.setCpf(12345678900l);
         cliente.setNome("Artur Logan");
@@ -42,7 +43,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void salvarCliente(){
+    public void salvarCliente() throws TipoChaveNaoEncontradaException {
         Boolean retorno = clienteService.salvar(cliente);
 
         Assert.assertTrue(retorno);
@@ -51,5 +52,20 @@ public class ClienteServiceTest {
     @Test
     public void excluirCliente(){
         clienteService.excluir(cliente.getCpf());
+    }
+
+    @Test
+    public void alterar() throws TipoChaveNaoEncontradaException {
+        cliente.setNome("Alterar");
+        clienteService.alterarCliente(cliente);
+
+        Assert.assertEquals("Alterar", cliente.getNome());
+    }
+
+    @Test
+    public void consultarCliente(){
+
+        Cliente clienteConsultado = clienteService.buscarPorCPF(Long.valueOf(cliente.getCpf()));
+        Assert.assertNotNull(clienteConsultado);
     }
 }

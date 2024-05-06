@@ -1,6 +1,8 @@
 package domains;
 
-public class Cliente {
+import dao.Persistente;
+
+public class Cliente implements Persistente {
 
     private Long cpf;
     private String nome;
